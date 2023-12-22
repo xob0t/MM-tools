@@ -14,4 +14,5 @@
 
 ## Megamarket Price Calculator
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_bonus_calc.user.js)
+
 Отображение цен с вычетом бонусов и сортировка по ним.
