@@ -2,7 +2,7 @@
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_cart_tools.user.js)
 
 
-![demo](media/cart_demo.webp "Made with ScreenToGif")
+![cart_demo](media/cart_demo.webp "Made with ScreenToGif")
 
 Добавляет инструменты для работы с корзинами.
 
@@ -16,3 +16,4 @@
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_bonus_calc.user.js)
 
 Отображение цен с вычетом бонусов и сортировка по ним.
+![bonus_demo](media/bonus_demo.jpg)
