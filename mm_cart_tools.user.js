@@ -8,7 +8,6 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=megamarket.ru
 // @grant        GM_setClipboard
 // @run-at       document-start
-// @require      file:///C:/js/mm-cart-tools.user.js
 // ==/UserScript==
 
 (function () {
@@ -76,7 +75,7 @@
 		const inputElement = document.createElement('input');
 		inputElement.setAttribute('type', 'text');
 		inputElement.className = 'text-input';
-		inputElement.placeholder = 'Вставить корзину';
+		inputElement.placeholder = 'Добавить товары';
 
 		divElement.appendChild(inputElement);
 
@@ -235,7 +234,7 @@
 		button.classList.add('btn', 'btn-block', 'btn-checkout');
 
 		const spanElement = document.createElement('span');
-		spanElement.textContent = 'Копировать корзину';
+		spanElement.textContent = 'Копировать товары';
 
 		button.appendChild(spanElement);
 
