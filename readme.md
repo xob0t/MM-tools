@@ -5,7 +5,7 @@
 2. Нажать на "**Установить**" у нужного вам скрипта
 
 ## Megamarket Bonus Date
-[Установить](https://github.com/xob0t/MM-tools/raw/main/mm_ref_bouns_date.user.js)
+[Установить](https://github.com/xob0t/MM-tools/raw/main/mm_bouns_date.user.js)
 
 Показывает дату начисления бонусов
 
