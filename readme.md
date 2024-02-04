@@ -4,12 +4,12 @@
     * [Violentmonkey](https://violentmonkey.github.io/)
 2. Нажать на "**Установить**" у нужного вам скрипта
 
-## Megamarket Ref Date
+## Megamarket Bonus Date
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_ref_bouns_date.user.js)
 
 Показывает дату начисления реферальных бонусов
 
-![ref_demo](media/image.png)
+![bonus_demo](media/bonus_demo.png)
 
 ## Megamarket Cart Tools
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_cart_tools.user.js)
