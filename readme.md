@@ -7,7 +7,7 @@
 ## Megamarket Bonus Date
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_ref_bouns_date.user.js)
 
-Показывает дату начисления реферальных бонусов
+Показывает дату начисления бонусов
 
 ![bonus_demo](media/bonus_demo.png)
 
