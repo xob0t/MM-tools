@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Megamarket Ref Date
+// @name         Megamarket Bonus Date
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-02-04
-// @description  Добваляет дату начисления реферальных бонусов
+// @version      2024-02-05
+// @description  Показывает дату начислений бонусов
 // @author       xob0t
 // @match        https://megamarket.ru/personal/loyalty
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=megamarket.ru
@@ -13,9 +13,11 @@
 (function () {
     'use strict';
 
+    const targetBonusItems = ["Начисление за заказ вашего друга", "Начисление за отзыв", "Восстановление бонусов", "Корректировка бонусного счёта"]
+
     const urlPattern = 'api/mobile/v1/loyaltyService/bonus/history';
 
-    let refDateData = null;
+    let dateData = null;
 
     const originalFetch = window.fetch;
     window.fetch = async (...args) => {
@@ -43,20 +45,24 @@
 
     function parseData(data) {
         const parsedData = JSON.parse(data);
-        refDateData = parsedData.details.filter(item => item.name === "Начисление за заказ вашего друга");
+        dateData = parsedData.details.filter(item => {
+            return targetBonusItems.some(targetItem => item.name.includes(targetItem));
+        });
     }
 
     function appendDate() {
-        if (!refDateData) {
+        if (!dateData) {
             console.error("no date data!")
             return
         }
         try {
             const bonusHistoryElements = Array.from(document.querySelectorAll("div.bonus-transaction-item"));
-            const refElements = bonusHistoryElements.filter(item => item.innerText.includes("Начисление за заказ вашего друга"));
+            const refElements = bonusHistoryElements.filter(item => {
+                return targetBonusItems.some(targetItem => item.innerText.includes(targetItem));
+            });
 
             for (const [index, refElement] of refElements.entries()) {
-                const date = refDateData[index].date;
+                const date = dateData[index].date;
                 const newElement = createElement(date);
                 refElement.querySelector(".bonus-transaction-item__right-side").append(newElement);
             }
