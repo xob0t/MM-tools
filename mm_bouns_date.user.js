@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Megamarket Bonus Date
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-02-05
+// @version      2024-02-12
 // @description  Показывает дату начислений бонусов
 // @author       xob0t
 // @match        https://megamarket.ru/personal/loyalty
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=megamarket.ru
+// @icon         https://raw.githubusercontent.com/xob0t/MM-tools/main/media/spasibo-bonus-icon.png
 // @grant        none
 // @run-at       body
 // ==/UserScript==
@@ -13,11 +13,9 @@
 (function () {
     'use strict';
 
-    const targetBonusItems = ["Начисление за заказ вашего друга", "Начисление за отзыв", "Восстановление бонусов", "Корректировка бонусного счёта"]
-
     const urlPattern = 'api/mobile/v1/loyaltyService/bonus/history';
 
-    let dateData = null;
+    let bonusData = null;
 
     const originalFetch = window.fetch;
     window.fetch = async (...args) => {
@@ -36,35 +34,34 @@
         return originalFetch(...args);
     };
 
-    function createElement(text) {
+    function createNewElement(text) {
         const p = document.createElement('p');
-        p.className = 'bonus-transaction-item__transaction-spasibo-debit-date bonus-transaction-item__transaction-value_finished';
+        p.className = 'custom-date bonus-transaction-item__transaction-spasibo-debit-date bonus-transaction-item__transaction-value_finished';
         p.textContent = text;
         return p;
     }
 
     function parseData(data) {
         const parsedData = JSON.parse(data);
-        dateData = parsedData.details.filter(item => {
-            return targetBonusItems.some(targetItem => item.name.includes(targetItem));
-        });
+        bonusData = parsedData.details;
     }
 
+
     function appendDate() {
-        if (!dateData) {
-            console.error("no date data!")
-            return
+        if (!bonusData) {
+            console.error('no bonus data!');
+            return;
         }
         try {
-            const bonusHistoryElements = Array.from(document.querySelectorAll("div.bonus-transaction-item"));
-            const refElements = bonusHistoryElements.filter(item => {
-                return targetBonusItems.some(targetItem => item.innerText.includes(targetItem));
-            });
+            const bonusHistoryElements = Array.from(document.querySelectorAll('.bonus-transaction-item'));
 
-            for (const [index, refElement] of refElements.entries()) {
-                const date = dateData[index].date;
-                const newElement = createElement(date);
-                refElement.querySelector(".bonus-transaction-item__right-side").append(newElement);
+            for (const [index, bonusHistoryElement] of bonusHistoryElements.entries()) {
+                const processed = bonusHistoryElement.querySelector('.bonus-transaction-item__right-side .custom-date')
+                const preExistingDate = bonusHistoryElement.querySelector('.bonus-transaction-item__right-side .bonus-transaction-item__transaction-spasibo-debit-date')
+                if (processed || preExistingDate) continue;
+                const date = bonusData[index].date;
+                const newElement = createNewElement(date);
+                bonusHistoryElement.querySelector('.bonus-transaction-item__right-side').append(newElement);
             }
 
         } catch (error) {
@@ -76,14 +73,13 @@
         for (const mutation of mutations) {
             if (mutation.type === 'childList') {
                 for (const node of mutation.addedNodes) {
-                    if (node?.classList.contains('profile-loyalty-list')) {
+                    if (node?.classList?.contains('profile-loyalty-list') || node?.classList?.contains('bonus-transaction-item')) {
                         appendDate();
                     }
                 }
             }
         }
     });
-
 
     const target = document.body;
     const config = { attributes: false, childList: true, subtree: true };
