@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Megamarket Price Calculator
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2023-12-23
+// @version      2024-03-18
 // @description  Отображение цен с вычетом бонусов и сортировка по ним
 // @author       xob0t
 // @match        https://megamarket.ru/*
@@ -360,8 +360,8 @@
     function calculatePricesAndSort() {
         const productOffersTableList = document.querySelectorAll('.product-offers');
         const productStripList = document.querySelectorAll('.product-list-items.product-list-items');
-        const productGrids = document.querySelectorAll('[class*="catalog-listing__items"]:not(.catalog-listing__items_horizontal)');
-        const horizontalProductLists = document.querySelectorAll('[class*="catalog-listing__items_horizontal"]');
+        const productGrids = document.querySelectorAll('[class*="catalog-items-list"]:not(.catalog-items-list.catalog-items-list_horizontal)');
+        const horizontalProductLists = document.querySelectorAll('.catalog-items-list.catalog-items-list_horizontal');
         const saleBlocks = document.querySelectorAll('.pdp-sales-block');
 
         if (saleBlocks.length > 0) {
