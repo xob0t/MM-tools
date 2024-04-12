@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Megamarket Cart Tools
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2023-12-23
+// @version      2023-04-12
 // @description  Копирование, вставка и удаление корзин
 // @author       xob0t
 // @match        https://megamarket.ru/*
@@ -16,7 +16,7 @@
 	const createDeleteButton = () => {
 		const button = document.createElement('button');
 		button.setAttribute('type', 'button');
-		button.classList.add('btn', 'btn-block', 'btn-checkout', 'btn-delete');
+		button.classList.add('btn', 'btn-block', 'btn-checkout', 'btn-delete', 'btn-custom');
 		button.textContent = 'Удалить корзину';
 		button.style.backgroundColor = "brown";
 
@@ -50,19 +50,6 @@
 			removeButtons = parentCart.querySelectorAll('.good__remove'); // Update the NodeList
 		}
 	};
-
-	const addDeleteButtonToCart = cartElement => {
-		const summary = cartElement.querySelector('.cart-summary-redesign__inner');
-		if (summary) {
-			const checkoutButton = summary.querySelector('button.btn.btn-block.btn-checkout');
-			if (checkoutButton) {
-				const deleteButton = createDeleteButton();
-				summary.insertBefore(deleteButton, checkoutButton.nextSibling);
-			}
-		}
-	};
-
-
 
 	const createInputFieldWithId = (id) => {
 		const divElement = document.createElement('div');
@@ -231,7 +218,7 @@
 	const createCopyButton = () => {
 		const button = document.createElement('button');
 		button.setAttribute('type', 'button');
-		button.classList.add('btn', 'btn-block', 'btn-checkout');
+		button.classList.add('btn', 'btn-block', 'btn-checkout', 'btn-copy', 'btn-custom');
 
 		const spanElement = document.createElement('span');
 		spanElement.textContent = 'Копировать товары';
@@ -288,15 +275,6 @@
 		}, 2000);
 	};
 
-	// Function to add buttons to the specified element
-	const addCopyButtonToCart = cartElement => {
-		const checkoutButton = cartElement.querySelector('button.btn.btn-block.btn-checkout');
-		if (checkoutButton) {
-			checkoutButton.parentNode.insertBefore(createCopyButton(), checkoutButton.nextSibling);
-		}
-
-	};
-
 	const addFieldToEmptyCart = (emptyCart) => {
 		const cartEmptyImage = emptyCart.querySelector(".cart-empty__image");
 		const inputField = createInputFieldWithId("emptyCart");
@@ -324,56 +302,74 @@
 
 	};
 
-	const handleNewMultiCart = (node) => {
-		const multicartList = node.querySelector('.multicart__list');
-		if (multicartList && multicartList.children) {
-			handleNewCartList(multicartList)
+	const handleNewCart = (node) => {
+        addButtonsToCart(node);
+		const header = document.querySelector(".multicart__title")
+		const inputFiledExists = document.getElementById("cartField")
+		if (!inputFiledExists){
+			header.parentNode.insertBefore(createInputFieldWithId("cartField"), header.nextSibling);
 		}
-	}
-
-	const handleNewCartList = (node) => {
-		for (const cartElement of node.children) {
-			// for a cart in the multicart
-			addButtonsToCart(cartElement);
-		}
-		const isCartExists = document.getElementById("cartField")
-		if (!isCartExists) {
-			node.parentNode.insertBefore(createInputFieldWithId("cartField"), node);
-		}
-
 	}
 
 	const addButtonsToCart = (cartElement) => {
-		addCopyButtonToCart(cartElement);
-		addDeleteButtonToCart(cartElement);
+		const checkoutButton = cartElement.querySelector(".btn.btn-block.btn-checkout")
+		if (checkoutButton.classList.contains('lg')){
+			insertButtons(checkoutButton)
+		}else{
+			fixStyle(cartElement);
+			insertButtons(checkoutButton)
+		}
 	}
 
+	const removeButtons = (cartElement) => {
+		const customButtons = cartElement.querySelectorAll('.btn-custom')
+		for (const btn of customButtons){
+			btn.remove()
+		}
+	}
+
+	const insertButtons = (checkoutButton) => {
+		checkoutButton?.parentNode?.insertBefore(createDeleteButton(), checkoutButton.nextSibling);
+		checkoutButton?.parentNode?.insertBefore(createCopyButton(), checkoutButton.nextSibling);
+	}
+
+
+	const fixStyle = (cartElement) => {
+		const sumbit = cartElement.querySelector(".cart-summary-redesign__mobile__submit")
+		sumbit.style.display = 'flex';
+		sumbit.style.flexDirection = 'column';
+		sumbit.style.gap = '1rem';
+	}
 
 	const handleMutations = (mutationsList) => {
 		mutationsList.forEach(mutation => {
 			if (mutation.type === 'childList') {
 				mutation.addedNodes.forEach(node => {
-					if (node && node.classList && node.classList.length === 1 && node.classList.contains('multicart')) {
-						// new multicart added
-						handleNewMultiCart(node);
+					if (node?.classList?.contains('multicart-item')) {
+						// new cart added
+                        handleNewCart(node);
 					}
-					if (node && node.classList && node.classList.length === 1 && node.classList.contains('multicart__list')) {
-						// new multicart__list added
-						handleNewCartList(node);
+					if (node?.classList?.contains('multicart__list')) {
+						// new multicart list added
+						for (const cart of node.childNodes){
+							handleNewCart(cart);
+						}
+					}
+					if (node?.classList?.contains('btn-checkout') && node?.classList?.contains('lg')) {
+						// big checkout button added on window resize
+						removeButtons(node.closest(".multicart-item"));
+                        handleNewCart(node.closest(".multicart-item"));
+					}
+					if (node?.classList?.contains('cart-summary-redesign__mobile')) {
+						// mobile summary added on window resize
+						removeButtons(node.closest(".multicart-item"));
+                        handleNewCart(node.closest(".multicart-item"));
 					}
 
 					if (node.classList && node.classList.contains('cart-empty')) {
 						// new empty cart added
-						console.log('New cart-empty:', node);
-						addFieldToEmptyCart(node)
-
-					}
-				});
-
-				mutation.removedNodes.forEach(node => {
-					if (node.classList && node.classList.contains('multicart__list')) {
-						// multicart__list removed
 						removeInputFieldWithId("cartField")
+						addFieldToEmptyCart(node)
 					}
 				});
 			}
