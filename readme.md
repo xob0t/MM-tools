@@ -3,6 +3,10 @@
     * [Tampermonkey](https://www.tampermonkey.net/)
     * [Violentmonkey](https://violentmonkey.github.io/)
 2. Нажать на "**Установить**" у нужного вам скрипта
+3. Сказать спасибо автору - [https://yoomoney.ru/to/410018051351692](https://yoomoney.ru/to/410018051351692)
+
+## Парсер
+https://github.com/xob0t/mmparser
 
 ## Megamarket Bonus Date
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_bouns_date.user.js)
