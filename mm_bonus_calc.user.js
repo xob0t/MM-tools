@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Megamarket Price Calculator
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-03-18
+// @version      2024-04-19
 // @description  Отображение цен с вычетом бонусов и сортировка по ним
 // @author       xob0t
 // @match        https://megamarket.ru/*
@@ -109,7 +109,7 @@
     function processProductGrids(productGrids) {
         productGrids.forEach(grid => {
 
-            const gridItems = grid.querySelectorAll('.catalog-item:not(.processed)');
+            const gridItems = grid.querySelectorAll('[id]:not(.processed)');
             let newElementsAdded = false;
 
             gridItems.forEach(gridItem => {
@@ -117,8 +117,8 @@
                     return;
                 }
 
-                const priceElement = gridItem.querySelector('.item-price span');
-                const bonusElement = gridItem.querySelector('.money-bonus_loyalty');
+                const priceElement = gridItem.querySelector('.catalog-item-regular-desktop__price');
+                const bonusElement = gridItem.querySelector('.bonus-amount');
 
                 if (priceElement && bonusElement) {
                     const oldPrice = parseInt(extractDigitsFromString(priceElement.textContent.trim()), 10);
@@ -135,22 +135,18 @@
 
                     // Create a new element to display the resulted amount
                     const newPriceElement = document.createElement('div');
-                    newPriceElement.classList.add('item-money', 'new');
-
-                    const priceElementChild = document.createElement('div');
-                    priceElementChild.classList.add('item-price');
+                    newPriceElement.classList.add('catalog-item-regular-desktop__price', 'new');
 
                     const amountElement = document.createElement('span');
                     amountElement.textContent = `${newPrice} ₽`;
                     amountElement.style.setProperty('color', priceColor, 'important');
 
                     // Append elements to each other
-                    priceElementChild.appendChild(amountElement);
-                    newPriceElement.appendChild(priceElementChild);
+                    newPriceElement.appendChild(amountElement);
 
                     // Insert the new elements into the item
-                    const pricesContainer = gridItem.querySelector('.inner.catalog-item__prices-container');
-                    pricesContainer.insertBefore(newPriceElement, pricesContainer.children[1]);
+                    const pricesContainer = gridItem.querySelector('.catalog-item-regular-desktop__price-conditions');
+                    pricesContainer.insertBefore(newPriceElement, pricesContainer.children[0]);
 
                     console.log('grid item price calculated');
                     newElementsAdded = true;
@@ -376,6 +372,7 @@
         }
 
         if (productGrids.length > 0) {
+            // debugger
             processProductGrids(productGrids)
         }
         if (horizontalProductLists.length > 0) {
@@ -383,7 +380,7 @@
         }
     }
 
-    setInterval(calculatePricesAndSort, 2000); // simple and robust
+    setInterval(calculatePricesAndSort, 2000);
 
 
 })();
