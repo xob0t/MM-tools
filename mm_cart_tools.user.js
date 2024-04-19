@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Megamarket Cart Tools
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-04-12
+// @version      2024-04-19
 // @description  Копирование, вставка и удаление корзин
 // @author       xob0t
 // @match        https://megamarket.ru/*
@@ -346,10 +346,11 @@
 			if (mutation.type === 'childList') {
 				mutation.addedNodes.forEach(node => {
 					if (node?.classList?.contains('multicart-item')) {
-						// new cart added
+						console.log("[mmtools] multicart-item hooked")
                         handleNewCart(node);
 					}
 					if (node?.classList?.contains('multicart__list')) {
+						console.log("[mmtools] multicart__list hooked")
 						// new multicart list added
 						for (const cart of node.childNodes){
 							handleNewCart(cart);
@@ -357,17 +358,20 @@
 					}
 					if (node?.classList?.contains('btn-checkout') && node?.classList?.contains('lg')) {
 						// big checkout button added on window resize
+						console.log("[mmtools] btn-checkout hooked")
 						removeButtons(node.closest(".multicart-item"));
                         handleNewCart(node.closest(".multicart-item"));
 					}
 					if (node?.classList?.contains('cart-summary-redesign__mobile')) {
 						// mobile summary added on window resize
+						console.log("[mmtools] cart-summary-redesign__mobile hooked")
 						removeButtons(node.closest(".multicart-item"));
                         handleNewCart(node.closest(".multicart-item"));
 					}
 
 					if (node.classList && node.classList.contains('cart-empty')) {
 						// new empty cart added
+						console.log("[mmtools] cart-empty hooked")
 						removeInputFieldWithId("cartField")
 						addFieldToEmptyCart(node)
 					}
