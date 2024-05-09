@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Megamarket Cart Tools
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-04-19
+// @version      2024-05-10
 // @description  Копирование, вставка и удаление корзин
 // @author       xob0t
 // @match        https://megamarket.ru/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=megamarket.ru
+// @icon         https://raw.githubusercontent.com/xob0t/MM-tools/main/media/cart-icon.png
 // @grant        GM_setClipboard
 // @run-at       document-start
 // ==/UserScript==
