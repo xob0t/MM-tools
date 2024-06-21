@@ -8,6 +8,13 @@
 ## Парсер
 https://github.com/xob0t/mmparser
 
+## Megamarket Order Info
+[Установить](https://github.com/xob0t/MM-tools/raw/main/mm_order_info.user.js)
+
+Показывает информацию по промокодам и бонусам на станице заказов
+
+![order_info_demo](media/order-info-demo.png)
+
 ## Megamarket Bonus Date
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_bouns_date.user.js)
 
