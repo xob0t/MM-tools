@@ -82,7 +82,7 @@
         await addToCartRequest(newCartData.items, newCartData.cartInfo.type, newCartData.cartInfo.locationId);
         location.reload();
       } catch (error) {
-        console.error("Error parsing JSON:", error);
+        console.error("[mmtools] Error parsing JSON:", error);
         alert("Ошибка ввода корзины");
       }
     }
@@ -93,7 +93,7 @@
     if (elementToRemove) {
       elementToRemove.remove();
     } else {
-      console.log(`Element with ID ${id} not found.`);
+      console.log(`[mmtools] Element with ID ${id} not found.`);
     }
   };
 
@@ -145,7 +145,7 @@
         return response.json();
       })
       .catch((error) => {
-        console.error("Error getCartData:", error);
+        console.error("[mmtools] Error getCartData:", error);
         throw error;
       });
   };
@@ -167,7 +167,7 @@
         return response.json();
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("[mmtools] Error:", error);
         throw error;
       });
   };
@@ -206,10 +206,10 @@
       }
 
       const responseData = await response.json();
-      console.log("Cart Data:", responseData);
+      console.log("[mmtools] Cart Data:", responseData);
       return responseData;
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("[mmtools] Error:", error.message);
       throw error;
     }
   };
@@ -250,12 +250,12 @@
         const cartDataStringified = JSON.stringify(cartData);
         await GM_setClipboard(cartDataStringified);
         handleButtonAnimation(button, "orange", "Скопировано!");
-        console.log("Button clicked for item:", cartItem, "Cart Content:", cartData);
+        console.log("[mmtools] Button clicked for item:", cartItem, "Cart Content:", cartData);
       } else {
-        console.log("Cart content not found for position:", position);
+        console.log("[mmtools] Cart content not found for position:", position);
       }
     } catch (error) {
-      console.error("Error fetching cart content:", error);
+      console.error("[mmtools] Error fetching cart content:", error);
     }
   };
 
