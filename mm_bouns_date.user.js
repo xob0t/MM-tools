@@ -4,7 +4,7 @@
 // @version      2024-02-12
 // @description  Показывает дату начислений бонусов
 // @author       xob0t
-// @match        https://megamarket.ru/personal/loyalty
+// @match        https://megamarket.ru/*
 // @icon         https://raw.githubusercontent.com/xob0t/MM-tools/main/media/spasibo-bonus-icon.png
 // @grant        none
 // @run-at       body
