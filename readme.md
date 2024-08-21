@@ -11,7 +11,7 @@ https://github.com/xob0t/mmparser
 ## Megamarket Order Info
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_order_info.user.js)
 
-Показывает информацию по промокодам и бонусам на станице заказов
+Показывает информацию по промокодам и бонусам на странице заказов
 
 ![order_info_demo](media/order-info-demo.png)
 
@@ -38,4 +38,5 @@ https://github.com/xob0t/mmparser
 [Установить](https://github.com/xob0t/MM-tools/raw/main/mm_bonus_calc.user.js)
 
 Отображение цен с вычетом бонусов и сортировка по ним.
+
 ![price_demo](media/price_demo.jpg)
