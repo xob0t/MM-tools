@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Megamarket Cart Tools
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-05-10
+// @version      2025-04-28
 // @description  Копирование, вставка и удаление корзин
 // @author       xob0t
 // @match        https://megamarket.ru/*
@@ -310,7 +310,7 @@
   };
 
   const addButtonsToCart = (cartElement) => {
-    const checkoutButton = cartElement.querySelector(".btn.btn-block.btn-checkout");
+    const checkoutButton = cartElement.querySelector(".btn-checkout");
     if (checkoutButton.classList.contains("lg")) {
       insertButtons(checkoutButton);
     } else {
@@ -332,10 +332,11 @@
   };
 
   const fixStyle = (cartElement) => {
-    const sumbit = cartElement.querySelector(".cart-summary-redesign__mobile__submit");
-    sumbit.style.display = "flex";
-    sumbit.style.flexDirection = "column";
-    sumbit.style.gap = "1rem";
+    const sumbitMobile = cartElement.querySelector(".cart-summary-redesign__mobile__submit");
+    if (!sumbitMobile) return;
+    sumbitMobile.style.display = "flex";
+    sumbitMobile.style.flexDirection = "column";
+    sumbitMobile.style.gap = "1rem";
   };
 
   const handleMutations = (mutationsList) => {
