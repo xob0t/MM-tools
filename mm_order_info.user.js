@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Megamarket Order Info
 // @namespace    https://github.com/xob0t/MM-tools
-// @version      2024-05-10
+// @version      2025-04-28
 // @description  Показывает доп информацию у заказов
 // @author       xob0t
 // @match        https://megamarket.ru/*
@@ -37,6 +37,7 @@
   function createContainer() {
     const container = document.createElement("div");
     container.className = "custom-info order-delivery-status_gray";
+    container.style.borderRadius = "1rem";
     container.style.marginBottom = "2rem";
     container.style.padding = "1rem";
     container.style.maxWidth = "fit-content";
@@ -49,15 +50,14 @@
     const containerInner = document.createElement("div");
     containerInner.style.display = "flex";
     containerInner.style.zIndex = "100";
+    containerInner.style.gap = "0.5rem";
+
     const p = document.createElement("p");
-
     p.textContent = description;
-    p.className = "order-delivery__title-text link-to-details";
-
     containerInner.appendChild(p);
 
     const amountEl = document.createElement("p");
-    amountEl.className = "order-delivery-status_green order-delivery__title-status";
+    amountEl.style.color = "#2ee650"; //green
     amountEl.textContent = value;
     containerInner.appendChild(amountEl);
     return containerInner;
@@ -88,9 +88,9 @@
           if (!promoCode && spasiboSpent === 0 && spasiboObtained === 0) continue;
 
           let container = createContainer();
-          if (promoCode) container.appendChild(createInfoEl(`Промокод: ${promoCode.id}`, `-${promoCode.amount}`));
-          if (spasiboSpent > 0) container.appendChild(createInfoEl(`Бонусов потрачено:`, `-${spasiboSpent}`));
-          if (spasiboObtained > 0) container.appendChild(createInfoEl(`Бонусов получено:`, `+${spasiboObtained}`));
+          if (promoCode) container.appendChild(createInfoEl(`Промокод: ${promoCode.id} `, `${promoCode.amount}`));
+          if (spasiboSpent > 0) container.appendChild(createInfoEl(`Бонусов потрачено: `, `${spasiboSpent}`));
+          if (spasiboObtained > 0) container.appendChild(createInfoEl(`Бонусов получено: `, `${spasiboObtained}`));
 
           orderElement.insertBefore(container, orderElement.querySelector(".order-item__deliveries"));
         }
@@ -101,8 +101,7 @@
   }
   function orderAppendInfo(orderElementDetailed) {
     // personal/order/view/*
-    const extractNumbers = (str) =>
-      str.split("").reduce((acc, char) => (!isNaN(parseInt(char)) ? acc + char : acc), "");
+    const extractNumbers = (str) => str.split("").reduce((acc, char) => (!isNaN(parseInt(char)) ? acc + char : acc), "");
 
     if (!orderData) {
       console.error("[mmtools] no order data!");
@@ -121,11 +120,9 @@
         if (!promoCode) return;
 
         let container = createContainer();
-        if (promoCode) container.appendChild(createInfoEl(`Промокод: ${promoCode.id}`, `-${promoCode.amount}`));
+        if (promoCode) container.appendChild(createInfoEl(`Промокод: ${promoCode.id}`, `${promoCode.amount}`));
 
-        const summaryLabels = orderElementDetailed
-          .querySelector(".order-detailed__result-inner")
-          .querySelectorAll(".order-precheck__item-label");
+        const summaryLabels = orderElementDetailed.querySelector(".order-detailed__result-inner").querySelectorAll(".order-precheck__item-label");
 
         for (const summaryLabel of summaryLabels) {
           if (summaryLabel.innerText === "Промокод") {
